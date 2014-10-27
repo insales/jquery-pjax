@@ -398,7 +398,7 @@ function pjaxReload(container, options) {
 //
 // Returns nothing.
 function locationReplace(url) {
-  window.history.replaceState(null, "", "#")
+  window.history.replaceState(null, "", "/")
   window.location.replace(url)
 }
 
@@ -477,7 +477,12 @@ function onPjaxPopstate(event) {
           previousState: previousState
         })
         container.trigger(beforeReplaceEvent, [contents, options])
-        container.html(contents)
+
+        selector = contents.attr('id') ? '#'+contents.attr('id') : null
+        if (!selector) {
+          selector = '.'+contents.attr('class').split(' ').join('.')
+        }
+        container.find(selector).replaceWith(contents)
 
         container.trigger('pjax:end', [null, options])
       } else {

@@ -482,7 +482,7 @@ function onPjaxPopstate(event) {
         if (!selector) {
           selector = '.'+contents.attr('class').split(' ').filter(function(v) { return v }).join('.')
         }
-        container.parent().find(selector).replaceWith(contents)
+        $(document).find(selector).replaceWith(contents)
 
         container.trigger('pjax:end', [null, options])
       } else {

@@ -365,7 +365,7 @@ function pjax(options) {
   if (xhr.readyState > 0) {
     if (options.push && !options.replace) {
       // Cache current container element before replacing it
-      cachePush(pjax.state.id, context.clone())
+      cachePush(pjax.state.id, $('body').clone().contents())
 
       window.history.pushState(null, "", stripPjaxParam(options.requestUrl))
     }
@@ -448,7 +448,7 @@ function onPjaxPopstate(event) {
 
         // Cache current container before replacement and inform the
         // cache which direction the history shifted.
-        cachePop(direction, pjax.state.id, container.clone())
+        cachePop(direction, pjax.state.id, $('body').clone().contents())
       }
 
       var popstateEvent = $.Event('pjax:popstate', {
@@ -476,13 +476,8 @@ function onPjaxPopstate(event) {
           state: state,
           previousState: previousState
         })
-        container.trigger(beforeReplaceEvent, [contents.contents(), options])
-
-        var selector = contents.attr('id') ? '#'+contents.attr('id') : null
-        if (!selector) {
-          selector = '.'+contents.attr('class').split(' ').filter(function(v) { return v }).join('.')
-        }
-        $(document).find(selector).replaceWith(contents)
+        container.trigger(beforeReplaceEvent, [contents, options])
+        $('body').html(contents)
 
         container.trigger('pjax:end', [null, options])
       } else {

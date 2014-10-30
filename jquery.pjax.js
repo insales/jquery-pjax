@@ -479,7 +479,7 @@ function onPjaxPopstate(event) {
         container.trigger(beforeReplaceEvent, [contents, options])
         $('body').html(contents)
 
-        container.trigger('pjax:end', [null, options])
+        $(document).trigger('pjax:end', [null, options])
       } else {
         pjax(options)
       }
